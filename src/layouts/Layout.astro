@@ -3,6 +3,9 @@ import { ClientRouter } from "astro:transitions";
 import DynamicBackground from "../components/DynamicBackground.astro";
 import ScrollIndicator from "../components/ScrollIndicator.astro";
 import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/CookieConsent.astro";
+import Navbar from "../components/common/Navbar.astro";
+
 
 interface Props {
   title?: string;
@@ -350,6 +353,7 @@ const showScrollIndicator =
   <body>
     <div class="page-wrapper">
       <DynamicBackground />
+      <Navbar />
       <main class="main-content">
         <slot />
       </main>
@@ -357,5 +361,7 @@ const showScrollIndicator =
       <Footer />
       {showScrollIndicator && <ScrollIndicator />}
     </div>
+    <CookieConsent client:load />
+
   </body>
 </html>
