@@ -2,47 +2,45 @@
 import Button from "../../common/Button.astro";
 import { Icon } from "astro-icon/components";
 
-const contactUrl = "/contact";
+const contactUrl = "/contacto";
 ---
 
-<h2 slot="title" class="about-title scroll-target-title">Keep in touch</h2>
+<h2 slot="title" class="about-title scroll-target-title">Conectemos</h2>
 
 <div class="about-content scroll-target-content">
   <p>
-    This is the contact section where you can share your professional interests
-    and how others can reach you. Customize this text to describe what you're
-    looking for, whether it's job opportunities, collaborations, or networking.
+    Si sientes el llamado a profundizar en tu camino de autoconocimiento, educación consciente o sanación ancestral, estás en el lugar indicado.
+    Este espacio está abierto para quienes desean colaborar, participar en nuestras experiencias o simplemente compartir un intercambio humano y auténtico.
   </p>
   <p>
-    Below are some example contact links. Replace them with your own social
-    media profiles, email, and other relevant contact information.
+    Escríbenos para recibir más información sobre nuestros conciertos, formaciones, sesiones terapéuticas o para propuestas de colaboración. La puerta está abierta.
   </p>
 
   <div class="connect-icon-links">
     <a
-      href="mailto:example@email.com"
-      title="Send me an email"
+      href="mailto:sonidosancestrales@gmail.com"
+      title="Envíanos un correo"
       aria-label="Email"
     >
       <Icon name="ri:mail-line" size={24} aria-hidden="true" />
     </a>
     <a
-      href="https://github.com/example"
+      href="https://instagram.com/sonidosancestrales"
       target="_blank"
       rel="noopener noreferrer"
-      title="View my GitHub profile"
-      aria-label="GitHub"
+      title="Instagram de Sonidos Ancestrales"
+      aria-label="Instagram"
     >
-      <Icon name="ri:github-line" size={22} aria-hidden="true" />
+      <Icon name="ri:instagram-line" size={22} aria-hidden="true" />
     </a>
     <a
-      href="https://linkedin.com/in/example"
+      href="https://t.me/sonidosancestrales"
       target="_blank"
       rel="noopener noreferrer"
-      title="View my LinkedIn profile"
-      aria-label="LinkedIn"
+      title="Canal de Telegram"
+      aria-label="Telegram"
     >
-      <Icon name="ri:linkedin-box-line" size={22} aria-hidden="true" />
+      <Icon name="ri:telegram-line" size={22} aria-hidden="true" />
     </a>
   </div>
 
@@ -50,7 +48,7 @@ const contactUrl = "/contact";
     <Button
       class="button"
       href={contactUrl}
-      text="See All Contact Info"
+      text="Ver Toda la Información de Contacto"
       wrapperClass="cta-link"
     />
   </div>

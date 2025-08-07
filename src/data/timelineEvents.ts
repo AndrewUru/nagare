@@ -1,100 +1,72 @@
 // src/data/timelineEvents.ts
 
 export interface TimelineEventItem {
-  date: string; // YYYY-MM format (represents END date for sorting intervals)
-  dateRange?: string; // Formatted display range (e.g., "Jul 2024 – Sep 2024")
+  date: string;
+  dateRange?: string;
   title: string;
   category: "Experiences" | "Honors" | "Publications";
-  description?: string; // HTML string
+  description?: string;
   isHighlight?: boolean;
   highlightSummary?: string;
 }
 
 export const allTimelineEvents: TimelineEventItem[] = [
-  // Experiences (Sorted by end date implicitly for data entry)
-
+  // EXPERIENCES
   {
-    date: "2024-09",
-    dateRange: "July 2024 – September 2024",
-    title: "Lorem Ipsum",
+    date: "2025-08",
+    title: "Expansión del Proyecto EDHUCO",
     category: "Experiences",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
     isHighlight: true,
-    highlightSummary: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-  },
-  {
-    date: "2024-06",
-    dateRange: "September 2023 – June 2024",
-    title: "Lorem Ipsum",
-    category: "Experiences",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-  {
-    date: "2024-08",
-    title: "Sleeping is all you need",
-    category: "Publications",
-    isHighlight: true,
-    description: `<em>Sleeping is all you need</em> accepted by International Conference on Sleep Deprivation and Coffee Addiction.`,
-    highlightSummary:
-      "A groundbreaking study proving that people need sleeping, accepted by ICSDCA.",
-  },
-  {
-    date: "2023-05",
-    title: "Lorem Ipsum",
-    category: "Experiences",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-  {
-    date: "2022-09",
-    title: "Lorem Ipsum",
-    category: "Experiences",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-
-  // Honors
-  {
-    date: "2024-11",
-    title: "International Vibe Coding Award",
-    category: "Honors",
-    isHighlight: true,
-    description: `<p>Awarded the prestigious International Vibe Coding Award.</p>`,
-    highlightSummary:
-      "Awarded the prestigious International Vibe Coding Award.",
+    highlightSummary: `Nuevas alianzas, círculos sonoros y expansión a nuevos territorios.`,
+    description: `<p>El proyecto EDHUCO se expande con más retiros, sesiones y colaboraciones a nivel nacional e internacional.</p>`,
   },
   {
     date: "2024-11",
-    title: "Lorem Ipsum",
-    category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
+    title: "Primer Retiro de Sanación Chamánica",
+    category: "Experiences",
+    isHighlight: true,
+    highlightSummary: `Un encuentro profundo con la naturaleza, el ritual y la medicina del sonido.`,
+    description: `<p>Realizado en un entorno natural sagrado, este retiro reunió a almas buscadoras para sanar desde lo ancestral y reencontrarse con su medicina interior.</p>`,
   },
   {
-    date: "2024-11",
-    title: "Lorem Ipsum",
-    category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-  {
-    date: "2024-10",
-    title: "Lorem Ipsum",
-    category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-  {
-    date: "2024-05",
-    title: "Lorem Ipsum",
-    category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-  },
-  {
-    date: "2023-11",
-    title: "Lorem Ipsum",
-    category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
+    date: "2024-07",
+    dateRange: "Marzo – Julio 2024",
+    title: "Círculo Sonoro en Centros Educativos",
+    category: "Experiences",
+    description: `<p>Conciertos meditativos, dinámicas de atención plena y experiencias vibracionales con estudiantes y docentes. Un puente entre educación y espiritualidad.</p>`,
   },
   {
     date: "2023-10",
-    title: "Lorem Ipsum",
+    title: "Inicio de la Formación en Chamanismo",
+    category: "Experiences",
+    isHighlight: true,
+    highlightSummary: `Una formación viva para recordar, despertar y caminar en coherencia.`,
+    description: `<p>Se lanza la primera cohorte de formación EDHUCO, con módulos mensuales y un recorrido por la sabiduría ancestral aplicada al presente.</p>`,
+  },
+
+  // HONORS
+  {
+    date: "2024-12",
+    title: "Reconocimiento de Comunidad Educativa Local",
     category: "Honors",
-    description: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
+    description: `<p>EDHUCO es reconocido como proyecto transformador en espacios educativos alternativos.</p>`,
+  },
+  {
+    date: "2024-04",
+    title: "Alianza con SomRiu",
+    category: "Honors",
+    isHighlight: true,
+    highlightSummary: `Nace una sinergia entre el sonido y la medicina del cuerpo.`,
+    description: `<p>Colaboración con SomRiu para ofrecer experiencias combinadas de terapia de sonido y movimiento somático.</p>`,
+  },
+
+  // PUBLICATIONS
+  {
+    date: "2025-06",
+    title: "Publicación: Sonido, Rito y Educación Viva",
+    category: "Publications",
+    isHighlight: true,
+    highlightSummary: `Ensayo sobre cómo el sonido puede ser medicina en procesos educativos.`,
+    description: `<p>Publicado en una revista independiente de pedagogía alternativa, explora la integración del ritual sonoro como herramienta educativa.</p>`,
   },
 ];

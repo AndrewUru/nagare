@@ -17,10 +17,11 @@ function slugify(text: string): string {
 }
 ---
 
-<SubPageLayout title="Projects">
+<SubPageLayout title="Proyectos">
   <p class="page-intro">
-    Here are some of the projects I've worked on. You can find more details and
-    other experiments on my GitHub profiles.
+    Estos son algunos de los proyectos más representativos de mi trabajo con EDHUCO. 
+    Aquí exploro soluciones creativas a través del diseño sonoro, tecnologías emergentes y estrategias participativas. 
+    Para más detalles técnicos, puedes visitar los repositorios vinculados.
   </p>
   <div class="projects-grid">
     {
@@ -33,9 +34,9 @@ function slugify(text: string): string {
             timeframe={project.timeframe}
             imageSrc={project.imageSrc}
             imageAlt={project.imageAlt}
-            githubUrl={project.githubUrl}
+            
             projectUrl={project.projectUrl}
-            githubRepos={project.githubRepos}
+            
             techStack={project.techStack}
           >
             <div set:html={project.description} />
@@ -53,55 +54,28 @@ function slugify(text: string): string {
   gsap.registerPlugin(ScrollToPlugin);
 
   function smoothScrollToTarget() {
-    console.log("[projects.astro] smoothScrollToTarget triggered.");
     const params = new URLSearchParams(window.location.search);
     const targetId = params.get("scrollTo");
-    console.log("[projects.astro] Target ID from URL:", targetId);
-
     if (targetId) {
       setTimeout(() => {
-        console.log(
-          "[projects.astro] Inside setTimeout. Attempting to find elements..."
-        );
         const targetElement = document.getElementById(targetId);
-        const pageWrapperElement = document.querySelector(
-          ".page-wrapper"
-        ) as HTMLElement | null;
-        console.log("[projects.astro] Found target element:", targetElement);
-        console.log("[projects.astro] Found page wrapper:", pageWrapperElement);
+        const pageWrapperElement = document.querySelector(".page-wrapper");
 
         if (targetElement && pageWrapperElement) {
-          const targetOffsetTopInWrapper = targetElement.offsetTop;
-          const finalScrollPosition = targetOffsetTopInWrapper;
+          const finalScrollPosition = targetElement.offsetTop;
           gsap.to(pageWrapperElement, {
             duration: 1,
-            scrollTo: {
-              y: finalScrollPosition,
-            },
+            scrollTo: { y: finalScrollPosition },
             ease: "power4.out",
           });
 
           try {
             history.replaceState(null, "", window.location.pathname);
           } catch (e) {
-            console.error("Could not clean URL state:", e);
-          }
-        } else {
-          if (!targetElement)
-            console.warn(
-              `[projects.astro] Element with id "${targetId}" not found.`
-            );
-          if (!pageWrapperElement)
-            console.warn(`[projects.astro] .page-wrapper element not found.`);
-          try {
-            history.replaceState(null, "", window.location.pathname);
-          } catch {
-            // Intentionally ignore errors during this specific cleanup attempt
+            console.error("URL cleanup failed:", e);
           }
         }
       }, 100);
-    } else {
-      console.log("[projects.astro] No 'scrollTo' parameter found.");
     }
   }
 
@@ -124,8 +98,6 @@ function slugify(text: string): string {
   @media (min-width: 1024px) {
     .projects-grid {
       column-count: 2;
-      column-gap: 3rem;
-      gap: 3rem;
     }
   }
 

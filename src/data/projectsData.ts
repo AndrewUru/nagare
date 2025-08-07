@@ -1,106 +1,92 @@
 // src/data/projectsData.ts
 
+// Define ProjectDataItem type if not imported from elsewhere
 export interface ProjectDataItem {
   title: string;
-  timeframe?: string;
-  githubUrl?: string;
-  githubRepos?: { title?: string; url: string }[];
-  projectUrl?: string;
-  techStack?: string[];
-  imageSrc?: string;
-  imageAlt?: string;
-  thumbnailSrc?: string; // Optional: Path to a square thumbnail image
-  description: string; // HTML string
-  homepageSummary?: string; // Concise summary for homepage
-  isFeatured?: boolean; // Flag for featuring on homepage
+  timeframe: string;
+  projectUrl: string;
+  techStack: string[];
+  imageSrc: string;
+  imageAlt: string;
+  description: string;
+  isFeatured: boolean;
+  homepageSummary: string;
 }
 
-// Example data (replace with your actual data later)
 export const allProjectsData: ProjectDataItem[] = [
   {
-    title: "Nagare",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
+    title: "Formación en Chamanismo Ancestral",
+    timeframe: "Desde Octubre 2023",
+    projectUrl: "/formacion-edhuco",
+    techStack: [
+      "Chamanismo",
+      "Educación Consciente",
+      "Experiencia Transformadora",
+    ],
+    imageSrc: "/images/projects/formacion-chamanica.jpg",
+    imageAlt: "Círculo chamánico en la naturaleza",
     description: `
-        <p>Nagare, the <strong>portfolio website template</strong> you're currently viewing, built with <em>Astro</em>.</p>
-        <p>Features dynamic background effects, responsive design, smooth transitions, and content showcasing timeline, projects, and resume.</p>
-      `,
+      <p>Una formación viva que integra enseñanzas ancestrales, sabiduría espiritual y prácticas contemporáneas. Dirigida a quienes desean explorar su poder interior y recordar su misión en esta tierra.</p>
+      <p>Incluye encuentros mensuales, trabajo con elementos, rituales, y acompañamiento grupal.</p>
+    `,
     isFeatured: true,
     homepageSummary:
-      "Nagare, the <strong>portfolio website template</strong> you're currently viewing, built with <em>Astro</em>.",
+      "Un viaje iniciático a través del chamanismo, el sonido y la educación del alma.",
   },
   {
-    title: "Example Project",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
+    title: "Sonidos Ancestrales en Centros Educativos",
+    timeframe: "Marzo - Julio 2024",
+    projectUrl: "/experiencias#educativo",
+    techStack: ["Sound Healing", "Educación Alternativa", "Niños y Jóvenes"],
+    imageSrc: "/images/projects/centros-educativos.jpg",
+    imageAlt: "Sesión sonora con niños en un aula",
     description: `
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-      `,
-    isFeatured: true,
-    homepageSummary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    title: "Sample Project",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
-    description: `
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      `,
-    isFeatured: true,
-    homepageSummary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    title: "Specimen Project",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
-    description: `
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-      `,
+      <p>Sesiones de sonido vibracional en escuelas, orientadas a fomentar la atención plena, la regulación emocional y el bienestar integral en niños, adolescentes y educadores.</p>
+    `,
     isFeatured: true,
     homepageSummary:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "Sembrando semillas de presencia, armonía y sensibilidad en espacios escolares.",
   },
   {
-    title: "Some Project",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
+    title: "Retiro de Sanación Chamánica",
+    timeframe: "Noviembre 2023",
+    projectUrl: "/experiencias#retiro",
+    techStack: ["Ritual", "Trabajo con elementos", "Sanación Grupal"],
+    imageSrc: "/images/projects/retiro-chamanico.jpg",
+    imageAlt: "Altar con elementos de poder en un círculo ceremonial",
     description: `
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      `,
-    isFeatured: false,
+      <p>Un encuentro profundo con el alma, en conexión con la naturaleza, la medicina del sonido y los rituales ancestrales.</p>
+      <p>Exploramos el silencio, la introspección y la fuerza del círculo como medicina colectiva.</p>
+    `,
+    isFeatured: true,
+    homepageSummary: "Un espacio sagrado para sanar, recordar y reconectar.",
   },
   {
-    title: "Some Other Project",
-    timeframe: "April 2025",
-    githubUrl: "https://github.com/angine04/nagare",
-    projectUrl: "https://nagare.angine.tech",
-    techStack: ["Astro", "TypeScript"],
-    imageSrc: "/images/projects/nagare.png",
-    imageAlt: "Screenshot of the portfolio website homepage",
+    title: "Conciertos Meditativos",
+    timeframe: "2023 - Actualidad",
+    projectUrl: "/experiencias#conciertos",
+    techStack: ["Sonoterapia", "Instrumentos Ancestrales", "Meditación"],
+    imageSrc: "/images/projects/concierto-meditativo.jpg",
+    imageAlt: "Concierto de cuencos y sonidos ancestrales",
     description: `
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
-      `,
-    isFeatured: false,
+      <p>Conciertos inmersivos donde el sonido guía a los participantes a estados de meditación profunda, armonización energética y expansión de conciencia.</p>
+    `,
+    isFeatured: true,
+    homepageSummary:
+      "Viajes sonoros que abren portales interiores y despiertan memorias dormidas.",
   },
-  // Add more projects here
+  {
+    title: "Alianzas y Colaboraciones",
+    timeframe: "Desde 2024",
+    projectUrl: "/alianzas",
+    techStack: ["Redes", "Colaboraciones", "Cocreación"],
+    imageSrc: "/images/projects/colaboracion.jpg",
+    imageAlt: "Manos unidas en círculo ritual",
+    description: `
+      <p>Participación en encuentros, festivales y espacios terapéuticos junto a proyectos afines como SomRiu, colectivos de educación viva, y espacios de medicina ancestral.</p>
+    `,
+    isFeatured: true,
+    homepageSummary:
+      "Tejemos vínculos conscientes que nutren el propósito común.",
+  },
 ];

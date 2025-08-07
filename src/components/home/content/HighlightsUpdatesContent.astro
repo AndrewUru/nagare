@@ -17,13 +17,13 @@ const highlightsToShow: TimelineEventItem[] = allHighlights.slice(
   numberOfHighlightsToShow
 );
 
-const timelineUrl = "/timeline";
+const timelineUrl = "/evolucion";
 function formatEventDate(dateStr: string): string {
   if (!dateStr) return "";
   try {
     const [year, month] = dateStr.split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1));
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString("es-ES", {
       year: "numeric",
       month: "long",
       timeZone: "UTC",
@@ -36,7 +36,7 @@ function formatEventDate(dateStr: string): string {
 ---
 
 <h2 slot="title" class="about-title scroll-target-title">
-  Highlights & Updates
+  Evolución y Transformaciones
 </h2>
 
 <div class="about-content scroll-target-content">
@@ -68,7 +68,7 @@ function formatEventDate(dateStr: string): string {
         ))}
       </ul>
     ) : (
-      <p>No recent highlights available. Check back soon!</p> // Fallback message
+      <p>Aún no hay transformaciones recientes publicadas. ¡Vuelve pronto!</p>
     )
   }
 
@@ -76,7 +76,7 @@ function formatEventDate(dateStr: string): string {
     <Button
       class="button"
       href={timelineUrl}
-      text="Explore My Journey"
+      text="Ver todo el recorrido"
       wrapperClass="cta-link"
     />
   </div>
