@@ -3,25 +3,25 @@ import SubPageLayout from "../layouts/SubPageLayout.astro";
 import { Icon } from "astro-icon/components";
 ---
 
-<SubPageLayout title="Contact">
+<SubPageLayout title="Contacto">
   <div class="contact-content">
-    <p class="intro-text">Feel free to reach out!</p>
-    <p class="intro-text">Here's some description about how to contact me.</p>
+    <p class="intro-text">¡Siéntete libre de conectar!</p>
+    <p class="intro-text">Aquí puedes encontrar distintas maneras de acercarte: para consultas, colaboraciones o simplemente compartir energía consciente.</p>
 
-    <h3 class="contact-section-title">Contact Information</h3>
-    <p class="section-description">This is a list of my contact information.</p>
+    <h3 class="contact-section-title">Información de Contacto</h3>
+    <p class="section-description">Puedes escribir para saber más sobre ceremonias, formaciones o colaboraciones.</p>
     <ul class="contact-list">
       <li>
         <Icon name="ri:mail-line" class="contact-icon" />
-        <a href="javascript:alert('link to your email')">example@example.com</a>
+        <a href="mailto:sonidosancestrales@gmail.com">sonidosancestrales@gmail.com</a>
       </li>
       <li>
-        <Icon name="ri:github-line" class="contact-icon" />
-        <a href="javascript:alert('link to your github')">github.com/example</a>
+        <Icon name="ri:instagram-line" class="contact-icon" />
+        <a href="https://instagram.com/sonidosancestrales8" target="_blank" rel="noopener noreferrer">@sonidosancestrales8</a>
       </li>
       <li>
-        <Icon name="ri:planet-line" class="contact-icon" />
-        <a href="javascript:alert('link to your website')">example.com</a>
+        <Icon name="ri:telegram-line" class="contact-icon" />
+        <a href="https://t.me/sonidosancestrales" target="_blank" rel="noopener noreferrer">Canal de Telegram</a>
       </li>
     </ul>
   </div>
@@ -88,12 +88,5 @@ import { Icon } from "astro-icon/components";
   .contact-list a:hover {
     color: var(--link-hover-color);
     text-decoration: underline;
-  }
-
-  .section-divider {
-    border: 0;
-    height: 1px;
-    background: var(--button-border-color);
-    margin: 3rem 0;
   }
 </style>
