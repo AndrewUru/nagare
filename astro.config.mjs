@@ -1,10 +1,15 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-
 import icon from "astro-icon";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [icon()],
+  integrations: [
+    icon({
+      include: {
+        "heroicons-outline": ["sun", "moon"],
+      },
+    }),
+  ],
   prefetch: true,
 });

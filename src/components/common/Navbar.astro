@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 const links = [
   { name: "Inicio", href: "/" },
   { name: "Proyectos", href: "/projects" },
@@ -30,20 +32,32 @@ const links = [
       {links.map(link => (
         <li><a href={link.href}>{link.name}</a></li>
       ))}
+    <button class="theme-toggle desktop" aria-label="Cambiar tema" id="themeToggleDesktop">
+  <Icon class="icon-sun"  name="heroicons-outline:sun"  width={20} height={20} />
+  <Icon class="icon-moon" name="heroicons-outline:moon" width={20} height={20} />
+</button>
     </ul>
+
+
   </div>
 
   <!-- Panel móvil (overlay) -->
   <div id="mobile-menu" class="mobile-panel" aria-hidden="true">
     <div class="mobile-card">
       <div class="mobile-header">
-        <span class="brand">🌿 EDHUCO</span>
+        <span class="brand"> EDHUCO</span>
         <!-- Botón CERRAR dentro del panel -->
         <button class="close-btn" aria-label="Cerrar menú" id="closeButton">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
+        <button class="theme-toggle" aria-label="Cambiar tema" id="themeToggleMobile">
+  <Icon class="icon-sun"  name="heroicons-outline:sun"  width={20} height={20} />
+  <Icon class="icon-moon" name="heroicons-outline:moon" width={20} height={20} />
+</button>
+
+
       </div>
 
       <ul class="nav-links mobile">
@@ -68,6 +82,25 @@ const links = [
     overflow-x: hidden;
     max-height: 100vh;
   }
+
+  /* Tema CLARO */
+html:not(.dark){
+  --c-text:  #1a1a1a;         /* texto oscuro */
+  --c-accent:#6b4f1d;         /* hover/acento cálido (ajústalo a tu paleta) */
+  --glass:   rgba(10,15,25,.10);   /* overlay más suave */
+  --panel:   rgba(255,255,255,.96);/* tarjeta clara y legible */
+  --bd:      rgba(0,0,0,.08);      /* borde sutil para light */
+}
+
+/* Tema OSCURO (por si no lo tienes ya) */
+html.dark{
+  --c-text:  #e2e8f0;
+  --c-accent:#ccbf9a;
+  --glass:   rgba(10,15,25,.35);
+  --panel:   rgba(17,25,40,.28);
+  --bd:      rgba(148,163,184,.28);
+}
+  
 
   /* NAV contenedor */
   .navbar{
@@ -104,6 +137,7 @@ const links = [
   /* PANEL MÓVIL: cerrado por defecto */
   .mobile-panel{
     position: fixed; inset: 0; z-index: 1200;
+    background: var(--glass);
     display: grid; place-items: start center;
     padding: 1rem; background: var(--glass);
     backdrop-filter: blur(8px) saturate(120%);
@@ -115,6 +149,8 @@ const links = [
   }
   /* Contenedor de la tarjeta */
   .mobile-card{
+    background: var(--panel);
+    border: 1px solid var(--bd);
     width: min(680px, 92vw);
     margin-top: 4.5rem;
     background: var(--panel);
@@ -130,7 +166,7 @@ const links = [
   .brand{ color: var(--c-accent); font-weight: 700; }
   .close-btn{
     display: inline-flex; align-items:center; justify-content:center;
-    color: var(--c-text);
+    color: var(--c-text); border-color: var(--bd);
     background: transparent; border: 1px solid var(--bd);
     border-radius: 10px; padding: .35rem .45rem; cursor: pointer;
   }
@@ -157,9 +193,62 @@ const links = [
   @media (prefers-reduced-motion: reduce){
     *{ transition-duration: .001ms !important; }
   }
+
+
+.theme-toggle:hover{ transform: scale(1.05); }
+.theme-toggle{
+  display:inline-flex; align-items:center; justify-content:center;
+  background: rgba(148,163,184,.12);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: .35rem .5rem;
+  cursor: pointer;
+  color: var(--c-text);
+  margin-left: .5rem;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.theme-toggle:hover{ transform: scale(1.05); }
+
+/* Por defecto mostramos el icono acorde al tema */
+.icon-sun { display: none; }
+html.dark .icon-moon { display: inline-block; }
+html.dark .icon-sun  { display: none; }
+
+/* En tema claro: sol visible, luna oculta */
+html:not(.dark) .icon-sun  { display: inline-block; }
+html:not(.dark) .icon-moon { display: none; }
+
+
 </style>
 
 <script type="module">
+const btnDesktop = document.getElementById('themeToggleDesktop');
+const btnMobile  = document.getElementById('themeToggleMobile');
+
+function setTheme(mode) {
+  try { localStorage.setItem('theme', mode); } catch {}
+  const isDark = mode === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+}
+
+function getInitialTheme() {
+  let stored = null;
+  try { stored = localStorage.getItem('theme'); } catch {}
+  if (stored === 'dark' || stored === 'light') return stored;
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? 'dark' : 'light';
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.contains('dark');
+  setTheme(isDark ? 'light' : 'dark');
+}
+
+setTheme(getInitialTheme());
+btnDesktop?.addEventListener('click', toggleTheme);
+btnMobile?.addEventListener('click', toggleTheme);
+
   const nav   = document.getElementById('navbar');
   const openB = document.getElementById('menuButton');
   const closeB= document.getElementById('closeButton');

@@ -30,18 +30,40 @@ const showScrollIndicator =
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark light" />
+<script is:inline>
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+    } catch (_) {
+      var stored = null;
+    }
+    var mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    var prefersDark = mql ? mql.matches : true;
+    var isDark = stored ? stored === "dark" : prefersDark;
+
+    var root = document.documentElement;
+    if (isDark) root.classList.add("dark");
+    else root.classList.remove("dark");
+
+    root.style.colorScheme = isDark ? "dark" : "light";
+
+    if (!stored && mql && mql.addEventListener) {
+      mql.addEventListener("change", function (e) {
+        if (e.matches) {
+          root.classList.add("dark");
+          root.style.colorScheme = "dark";
+        } else {
+          root.classList.remove("dark");
+          root.style.colorScheme = "light";
+        }
+      });
+    }
+  })();
+</script>
+
     <title>{pageTitle}</title>
     <ClientRouter />
-    <script is:inline>
-      const isDarkMode =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (isDarkMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -244,111 +266,65 @@ const showScrollIndicator =
       });
     </script>
 
-    <script>
-      import { gsap } from "gsap";
-      import { ScrollTrigger } from "gsap/ScrollTrigger";
+   <script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-      gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
-      function setupSectionAnimations() {
-        const pageWrapper = document.querySelector(".page-wrapper");
-        if (!pageWrapper) {
-          console.warn(
-            "Section animations setup skipped: page wrapper not found."
-          );
-          return;
-        }
+  function setupSectionAnimations() {
+    const pageWrapper = document.querySelector(".page-wrapper");
+    if (!pageWrapper) {
+      console.warn("Section animations setup skipped: page wrapper not found.");
+      return;
+    }
 
-        const sections = document.querySelectorAll(".section-wrapper");
+    // Evita duplicados en navegaciones internas
+    ScrollTrigger.killAll(true);
 
-        if (sections.length > 0) {
-          sections.forEach((section) => {
-            const sectionTitle = section.querySelector(".scroll-target-title");
-            const sectionContent = section.querySelector(
-              ".scroll-target-content"
-            );
+    const sections = document.querySelectorAll(".section-wrapper");
+    sections.forEach((section) => {
+      const sectionTitle = section.querySelector(".scroll-target-title");
+      const sectionContent = section.querySelector(".scroll-target-content");
 
-            ScrollTrigger.getAll().forEach((trigger) => {
-              if (
-                trigger.trigger === sectionTitle ||
-                trigger.trigger === sectionContent
-              ) {
-                trigger.kill();
-              }
-            });
-
-            if (sectionTitle) {
-              gsap.set(sectionTitle, { filter: "blur(8px)", opacity: 0 });
-              gsap
-                .timeline({
-                  scrollTrigger: {
-                    trigger: sectionTitle,
-                    scroller: pageWrapper,
-                    start: "top 85%",
-                    end: "bottom top",
-                    scrub: 1,
-                  },
-                })
-                .to(sectionTitle, {
-                  filter: "blur(0px)",
-                  opacity: 1,
-                  ease: "sine",
-                  duration: 8,
-                })
-                .to(sectionTitle, {
-                  filter: "blur(8px)",
-                  opacity: 0,
-                  ease: "sine",
-                  duration: 1,
-                });
-            }
-
-            if (sectionContent) {
-              gsap.set(sectionContent, { opacity: 0, y: 30 });
-              gsap
-                .timeline({
-                  scrollTrigger: {
-                    trigger: sectionContent,
-                    scroller: pageWrapper,
-                    start: "top 85%",
-                    end: "bottom 30%",
-                    scrub: 1,
-                  },
-                })
-                .to(sectionContent, {
-                  opacity: 1,
-                  y: 0,
-                  ease: "power1.inOut",
-                  duration: 2,
-                })
-                .to(sectionContent, {
-                  opacity: 0,
-                  y: -30,
-                  ease: "power1.inOut",
-                  duration: 2,
-                });
-            }
-          });
-        }
+      if (sectionTitle) {
+        gsap.set(sectionTitle, { filter: "blur(8px)", opacity: 0 });
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionTitle,
+            scroller: pageWrapper,
+            start: "top 85%",
+            end: "bottom top",
+            scrub: 1,
+          },
+        })
+        .to(sectionTitle, { filter: "blur(0px)", opacity: 1, ease: "sine", duration: 8 })
+        .to(sectionTitle, { filter: "blur(8px)", opacity: 0, ease: "sine", duration: 1 });
       }
 
-      document.addEventListener("astro:page-load", setupSectionAnimations);
-    </script>
-    <script>
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      if (sectionContent) {
+        gsap.set(sectionContent, { opacity: 0, y: 30 });
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: sectionContent,
+            scroller: pageWrapper,
+            start: "top 85%",
+            end: "bottom 30%",
+            scrub: 1,
+          },
+        })
+        .to(sectionContent, { opacity: 1, y: 0, ease: "power1.inOut", duration: 2 })
+        .to(sectionContent, { opacity: 0, y: -30, ease: "power1.inOut", duration: 2 });
+      }
+    });
+  }
 
-      const checkAndApplyTheme = () => {
-        if (mediaQuery.matches) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      };
+  // Primera carga
+  document.addEventListener("astro:page-load", setupSectionAnimations);
+  // Navegaciones con ClientRouter
+  document.addEventListener("astro:after-swap", setupSectionAnimations);
+</script>
 
-      mediaQuery.addEventListener("change", checkAndApplyTheme);
-
-      document.addEventListener("astro:page-load", checkAndApplyTheme);
-    </script>
   </head>
   <body>
     <div class="page-wrapper">
