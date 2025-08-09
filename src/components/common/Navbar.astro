@@ -222,71 +222,99 @@ html:not(.dark) .icon-moon { display: none; }
 </style>
 
 <script type="module">
-const btnDesktop = document.getElementById('themeToggleDesktop');
-const btnMobile  = document.getElementById('themeToggleMobile');
+  // ---------- THEME TOGGLE ----------
+  function setTheme(mode) {
+    try { localStorage.setItem('theme', mode); } catch {}
+    const isDark = mode === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  }
+  function getInitialTheme() {
+    let stored = null;
+    try { stored = localStorage.getItem('theme'); } catch {}
+    if (stored === 'dark' || stored === 'light') return stored;
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  }
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    setTheme(isDark ? 'light' : 'dark');
+  }
 
-function setTheme(mode) {
-  try { localStorage.setItem('theme', mode); } catch {}
-  const isDark = mode === 'dark';
-  document.documentElement.classList.toggle('dark', isDark);
-  document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-}
+  // ---------- NAVBAR (menu móvil) ----------
+  let navAbort; // para limpiar listeners entre rutas
 
-function getInitialTheme() {
-  let stored = null;
-  try { stored = localStorage.getItem('theme'); } catch {}
-  if (stored === 'dark' || stored === 'light') return stored;
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
-}
+  function setupNavbar() {
+    // Limpia cualquier binding anterior
+    if (navAbort) navAbort.abort();
+    navAbort = new AbortController();
+    const { signal } = navAbort;
 
-function toggleTheme() {
-  const isDark = document.documentElement.classList.contains('dark');
-  setTheme(isDark ? 'light' : 'dark');
-}
+    const nav   = document.getElementById('navbar');
+    const openB = document.getElementById('menuButton');
+    const closeB= document.getElementById('closeButton');
+    const panel = document.getElementById('mobile-menu');
 
-setTheme(getInitialTheme());
-btnDesktop?.addEventListener('click', toggleTheme);
-btnMobile?.addEventListener('click', toggleTheme);
+    const lockScroll = () => {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+    };
+    const unlockScroll = () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
 
-  const nav   = document.getElementById('navbar');
-  const openB = document.getElementById('menuButton');
-  const closeB= document.getElementById('closeButton');
-  const panel = document.getElementById('mobile-menu');
+    const openMenu = () => {
+      nav?.classList.add('is-open');
+      openB?.setAttribute('aria-expanded','true');
+      panel?.setAttribute('aria-hidden','false');
+      lockScroll();
+    };
+    const closeMenu = () => {
+      nav?.classList.remove('is-open');
+      openB?.setAttribute('aria-expanded','false');
+      panel?.setAttribute('aria-hidden','true');
+      unlockScroll();
+    };
 
-  const lockScroll = () => {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';        // evita doble scroll
-    document.body.style.touchAction = 'none';       // iOS
-  };
-  const unlockScroll = () => {
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    document.body.style.touchAction = '';
-  };
+    // Eventos
+    openB?.addEventListener('click', () => (
+      nav?.classList.contains('is-open') ? closeMenu() : openMenu()
+    ), { signal });
 
-  const openMenu = () => {
-    nav.classList.add('is-open');
-    openB.setAttribute('aria-expanded','true');
-    panel.setAttribute('aria-hidden','false');
-    lockScroll();
-  };
-  const closeMenu = () => {
-    nav.classList.remove('is-open');
-    openB.setAttribute('aria-expanded','false');
-    panel.setAttribute('aria-hidden','true');
-    unlockScroll();
-  };
+    closeB?.addEventListener('click', closeMenu, { signal });
 
-  openB?.addEventListener('click', () => nav.classList.contains('is-open') ? closeMenu() : openMenu());
-  closeB?.addEventListener('click', closeMenu);
+    panel?.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.tagName === 'A') closeMenu();
+    }, { signal });
 
-  // Cerrar al clickear un link del panel
-  panel?.addEventListener('click', (e) => {
-    const t = e.target;
-    if (t.tagName === 'A') closeMenu();
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    }, { signal });
+
+    // Cierra el panel antes de hacer swap de ruta para no dejar el scroll bloqueado
+    document.addEventListener('astro:before-swap', closeMenu, { signal });
+
+    // THEME: re‑engancha los botones de toggle por si el DOM cambió
+    const btnDesktop = document.getElementById('themeToggleDesktop');
+    const btnMobile  = document.getElementById('themeToggleMobile');
+    btnDesktop?.addEventListener('click', toggleTheme, { signal });
+    btnMobile?.addEventListener('click', toggleTheme, { signal });
+  }
+
+  // Primera carga
+  document.addEventListener('astro:page-load', () => {
+    // Asegura tema
+    setTheme(getInitialTheme());
+    setupNavbar();
   });
 
-  // Cerrar con Escape
-  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  // Después de cada navegación SPA
+  document.addEventListener('astro:after-swap', () => {
+    setupNavbar();
+  });
 </script>
+

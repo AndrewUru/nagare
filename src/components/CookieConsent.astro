@@ -84,133 +84,116 @@
   </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
+<script type="module">
+  // Evita dobles inicializaciones
+  if (!window.__cookieConsentInit) {
+    window.__cookieConsentInit = true;
+  }
+
+  const initCookieConsent = () => {
     const status = localStorage.getItem("cookieConsentStatus");
     const consentBox = document.getElementById("cookieConsent");
     const settingsModal = document.getElementById("cookieSettings");
 
-    // Mostrar banner si no hay consentimiento previo
-    if (!status && consentBox) {
-      // Animación de entrada suave
-      setTimeout(() => {
-        consentBox.style.display = "flex";
-        consentBox.classList.add("show");
-      }, 1000);
+    // Ya aceptó o rechazó → no hacemos nada
+    if (status || !consentBox) return;
 
-      // Botones principales
-      const acceptBtn = document.getElementById("acceptCookies");
-      const rejectBtn = document.getElementById("rejectCookies");
-      const settingsBtn = document.getElementById("settingsCookies");
+    // Mostrar banner
+    setTimeout(() => {
+      consentBox.style.display = "flex";
+      consentBox.classList.add("show");
+    }, 1000);
 
-      // Aceptar todas las cookies
-      if (acceptBtn) {
-        acceptBtn.onclick = () => {
-          localStorage.setItem("cookieConsentStatus", "accepted");
-          localStorage.setItem("cookiePreferences", JSON.stringify({
-            essential: true,
-            analytics: true,
-            marketing: true
-          }));
-          hideConsentBox();
-          showNotification("✅ Configuración guardada. Todas las cookies habilitadas.");
-        };
-      }
+    const acceptBtn = document.getElementById("acceptCookies");
+    const rejectBtn = document.getElementById("rejectCookies");
+    const settingsBtn = document.getElementById("settingsCookies");
 
-      // Rechazar cookies opcionales
-      if (rejectBtn) {
-        rejectBtn.onclick = () => {
-          localStorage.setItem("cookieConsentStatus", "rejected");
-          localStorage.setItem("cookiePreferences", JSON.stringify({
-            essential: true,
-            analytics: false,
-            marketing: false
-          }));
-          hideConsentBox();
-          showNotification("✅ Solo se utilizarán cookies esenciales.");
-        };
-      }
+    const hideConsentBox = () => {
+      consentBox.classList.add("hide");
+      setTimeout(() => consentBox.remove(), 300);
+    };
 
-      // Mostrar configuración detallada
-      if (settingsBtn && settingsModal) {
-        settingsBtn.onclick = () => {
-          settingsModal.style.display = "flex";
-          document.body.style.overflow = "hidden";
-          
-          // Cargar preferencias existentes
-          const prefs = JSON.parse(localStorage.getItem("cookiePreferences") || "{}");
-          const analyticsCheckbox = document.getElementById("analytics") as HTMLInputElement | null;
-          if (analyticsCheckbox) analyticsCheckbox.checked = prefs.analytics || false;
-          const marketingCheckbox = document.getElementById("marketing") as HTMLInputElement | null;
-          if (marketingCheckbox) marketingCheckbox.checked = prefs.marketing || false;
-        };
-      }
-    }
+    const closeSettingsModal = () => {
+      if (!settingsModal) return;
+      settingsModal.style.display = "none";
+      document.body.style.overflow = "";
+    };
 
-    // Configuración del modal
+    const showNotification = (message) => {
+      const n = document.createElement("div");
+      n.className = "cookie-notification";
+      n.textContent = message;
+      document.body.appendChild(n);
+      setTimeout(() => n.classList.add("show"), 100);
+      setTimeout(() => { n.classList.remove("show"); setTimeout(() => n.remove(), 300); }, 3000);
+    };
+
+    // Aceptar todas
+    acceptBtn?.addEventListener("click", () => {
+      localStorage.setItem("cookieConsentStatus", "accepted");
+      localStorage.setItem("cookiePreferences", JSON.stringify({
+        essential: true, analytics: true, marketing: true
+      }));
+      hideConsentBox();
+      showNotification("✅ Configuración guardada. Todas las cookies habilitadas.");
+    });
+
+    // Solo esenciales
+    rejectBtn?.addEventListener("click", () => {
+      localStorage.setItem("cookieConsentStatus", "rejected");
+      localStorage.setItem("cookiePreferences", JSON.stringify({
+        essential: true, analytics: false, marketing: false
+      }));
+      hideConsentBox();
+      showNotification("✅ Solo se utilizarán cookies esenciales.");
+    });
+
+    // Abrir ajustes
+    settingsBtn?.addEventListener("click", () => {
+      if (!settingsModal) return;
+      settingsModal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+      // Cargar prefs
+      const prefs = JSON.parse(localStorage.getItem("cookiePreferences") || "{}");
+      const analytics = /** @type {HTMLInputElement|null} */(document.getElementById("analytics"));
+      const marketing = /** @type {HTMLInputElement|null} */(document.getElementById("marketing"));
+      if (analytics) analytics.checked = !!prefs.analytics;
+      if (marketing) marketing.checked = !!prefs.marketing;
+    });
+
+    // Config del modal
     if (settingsModal) {
       const closeBtn = document.getElementById("closeSettings");
       const saveBtn = document.getElementById("saveSettings");
       const backdrop = settingsModal.querySelector(".modal-backdrop");
 
-      // Cerrar modal
-      [closeBtn, backdrop].forEach(el => {
-        if (el) {
-          (el as HTMLElement).onclick = () => closeSettingsModal();
-        }
-      });
+      const onClose = () => closeSettingsModal();
+      closeBtn?.addEventListener("click", onClose);
+      backdrop?.addEventListener("click", onClose);
 
-      // Guardar configuración personalizada
-      if (saveBtn) {
-        saveBtn.onclick = () => {
-          const preferences = {
-            essential: true,
-            analytics: (document.getElementById("analytics") as HTMLInputElement | null)?.checked ?? false,
-            marketing: (document.getElementById("marketing") as HTMLInputElement | null)?.checked ?? false
-          };
-
-          localStorage.setItem("cookieConsentStatus", "custom");
-          localStorage.setItem("cookiePreferences", JSON.stringify(preferences));
-          
-          closeSettingsModal();
-          hideConsentBox();
-          showNotification("✅ Configuración personalizada guardada.");
+      saveBtn?.addEventListener("click", () => {
+        const analytics = /** @type {HTMLInputElement|null} */(document.getElementById("analytics"));
+        const marketing = /** @type {HTMLInputElement|null} */(document.getElementById("marketing"));
+        const preferences = {
+          essential: true,
+          analytics: !!(analytics?.checked),
+          marketing: !!(marketing?.checked),
         };
-      }
+        localStorage.setItem("cookieConsentStatus", "custom");
+        localStorage.setItem("cookiePreferences", JSON.stringify(preferences));
+        closeSettingsModal();
+        hideConsentBox();
+        showNotification("✅ Configuración personalizada guardada.");
+      });
     }
+  };
 
-    // Funciones auxiliares
-    function hideConsentBox() {
-      if (consentBox) {
-        consentBox.classList.add("hide");
-        setTimeout(() => {
-          consentBox.remove();
-        }, 300);
-      }
-    }
-
-    function closeSettingsModal() {
-      if (settingsModal) {
-        settingsModal.style.display = "none";
-        document.body.style.overflow = "";
-      }
-    }
-
-    function showNotification(message) {
-      const notification = document.createElement("div");
-      notification.className = "cookie-notification";
-      notification.textContent = message;
-      
-      document.body.appendChild(notification);
-      
-      setTimeout(() => notification.classList.add("show"), 100);
-      setTimeout(() => {
-        notification.classList.remove("show");
-        setTimeout(() => notification.remove(), 300);
-      }, 3000);
-    }
-  });
+  // Primera carga (SSR -> CSR)
+  document.addEventListener("astro:page-load", initCookieConsent);
+  // Navegaciones con ClientRouter
+  document.addEventListener("astro:after-swap", initCookieConsent);
 </script>
+
 
 <style>
   /* Banner principal */
